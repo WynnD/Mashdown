@@ -34,6 +34,7 @@ class MyHTMLParser(HTMLParser):
 
 
 class Mashdown:
+
     def __init__(self):
         self.links = []
         self.abs_path = 'D:\\Music\\mashdown\\'
@@ -63,7 +64,6 @@ class Mashdown:
             # self.links = self.HTTPS_HTTP(self.links) # if we needed to convert our links into HTTP from HTTPS
 
 
-
     def parselinks(self, rss):
         # returns list of links [title, author, link, site]
         links = []
@@ -85,23 +85,25 @@ class Mashdown:
 
 
     def prettify_titles(self,links):
+
         for link in links:
             title = link['title']
             
             fragments = title.split(' [')
             link['title'] = fragments[0]
             
-
-
         return links
 
+
     def HTTPS_HTTP(self,links):
+
         for link in links:
             url = link['url']
             
             new_url = url.replace('https','http')
             link['url'] = new_url
         return links
+
 
     def download(self, links):
         
@@ -116,15 +118,19 @@ class Mashdown:
                                  "--add-metadata",
                                  "-o", (self.abs_path + title + '.m4a'),
                                  url])
-        
+       
+
     def confirm(self, links):
+
         for link in links:
             if link['site'] == 'youtube':
                 print(link['title'], link['url'])
         x = input("Download videos? (y/n): ")
+
         return (x.lower() == 'y')
 
     def check_downloaded(self, links):
+
         good_links = []
         ret = []
         
@@ -136,6 +142,7 @@ class Mashdown:
                 good_links.append(links[i]['url'])
         to_write = "\n".join(good_links)
         x.write(to_write)
+        
         return ret
         
 if __name__ == "__main__":
