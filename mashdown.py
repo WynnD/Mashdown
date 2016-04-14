@@ -51,7 +51,7 @@ class Mashdown:
 
         # parse the links given to us into a dictionary list dict{title, author, url, site}
         self.links = self.parselinks(entries)
-        self.links = self.prettify_titles(self.links)
+        # self.links = self.prettify_titles(self.links)
 
         # remove any links that have not been downloaded, and upload downloaded.txt with new links
         self.links = self.check_downloaded(self.links)
@@ -88,8 +88,9 @@ class Mashdown:
         for link in links:
             title = link['title']
             
-            fragments = title.split('[')
+            fragments = title.split(' [')
             link['title'] = fragments[0]
+            
 
 
         return links
@@ -103,17 +104,7 @@ class Mashdown:
         return links
 
     def download(self, links):
-##        ydl_opts = {
-##            'format': 'bestaudio/best',
-##            'postprocessors': [{
-##                'key': 'FFmpegExtractAudio',
-##                'preferredcodec': 'm4a',
-##                'preferredquality': '256'
-##                }],
-##            'nocheckcertificate':'1'
-##            ##'--metadata-from-title':'%(artist)s - %(title)s' 
-##
-##            }
+        
         for link in links:
             title = link['title']
             url = link['url']
@@ -125,9 +116,6 @@ class Mashdown:
                                  "--add-metadata",
                                  "-o", (self.abs_path + title + '.m4a'),
                                  url])
-##                ydl_opts['outtmpl'] = self.abs_path + title
-##                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-##                    ydl.download([url])
         
     def confirm(self, links):
         for link in links:
@@ -140,10 +128,10 @@ class Mashdown:
         good_links = []
         ret = []
         
-        x = open('downloaded.txt','w+')
+        x = open('downloaded.txt','r+')
         urls = x.readlines()
         for i in range(0, len(links)):
-            if links[i]['url'] not in urls:
+            if (links[i]['url']+'\n') not in urls:
                 ret.append(links[i])
                 good_links.append(links[i]['url'])
         to_write = "\n".join(good_links)
