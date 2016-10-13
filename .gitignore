@@ -2,3 +2,4 @@
 *.txt
 *.sublime*
 .gitignore~
+__pycache__/
